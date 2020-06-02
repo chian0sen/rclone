@@ -109,6 +109,8 @@ func init() {
 	// Set the function pointers up in fs
 	fs.ConfigFileGet = FileGetFlag
 	fs.ConfigFileSet = SetValueAndSave
+	// Set RCLONE_CONFIG_DIR for backend config and subprocesses
+	_ = os.Setenv("RCLONE_CONFIG_DIR", filepath.Dir(ConfigPath))
 }
 
 func getConfigData() *goconfig.ConfigFile {
