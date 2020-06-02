@@ -141,9 +141,11 @@ func (d *Dir) ForgetAll() {
 
 // invalidateDir invalidates the directory cache for absPath relative to this dir
 func (d *Dir) invalidateDir(absPath string) {
+	defer log.Trace(d.path, "absPath=%q", absPath)("")
 	node := d.vfs.root.cachedNode(absPath)
 	if dir, ok := node.(*Dir); ok {
 		dir.mu.Lock()
+		fs.Debugf(dir.path, "invalidateDir: checking dir %v is zero %v", dir.read, dir.read.IsZero())
 		if !dir.read.IsZero() {
 			fs.Debugf(dir.path, "invalidating directory cache")
 			dir.read = time.Time{}
